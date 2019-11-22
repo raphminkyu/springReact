@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Container from './Container';
 import './App.css';
+import Footer from './Footer.js';
 import { getAllStudents } from './client';
+import AddStudentForm from './forms/addStudentForm'
 import { 
-  Table, Avatar, Spin, Icon
+  Table, Avatar, Spin, Icon, Modal
 } from 'antd';
 
 
@@ -13,11 +15,16 @@ class App extends Component{
 
   state = {
     students: [],
-    isFetching: false
+    isFetching: false,
+    isAddStudentModalVisible:false
   }
   componentDidMount(){
     this.fetchStudents();
   }
+
+  openAddStudentModal = ()=> this.setState({isAddStudentModalVisible: true});
+
+  closeAddStudentModal = ()=> this.setState({isAddStudentModalVisible: false})
 
   fetchStudents = () => {
     this.setState({
@@ -37,7 +44,7 @@ class App extends Component{
   render(){
     
 
-    const { students , isFetching } = this.state;
+    const { students , isFetching, isAddStudentModalVisible } = this.state;
     
     
     if(isFetching){
@@ -77,6 +84,16 @@ class App extends Component{
         title: 'Last Name',
         dataIndex: 'lastName',
         key:'lastName'
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        key:'email'
+      },
+      {
+        title: 'Gender',
+        dataIndex: 'gender',
+        key:'gender'
       }
 
     ];
@@ -88,6 +105,19 @@ class App extends Component{
           columns = {columns} 
           pagination = {false}
           rowKey = 'studentId' />
+        <Modal 
+          title = "Add New Student"
+          visible = {isAddStudentModalVisible}
+          onOk ={this.closeAddStudentModal}
+          onCancel = {this.closeAddStudentModal}
+          width = {1000}>
+           
+            <AddStudentForm />
+
+        
+
+        </Modal>
+        <Footer numberOfStudents = {students.length} handleAddStudentClickEvent = {this.openAddStudentModal}/>
       </Container>
     )
    }
