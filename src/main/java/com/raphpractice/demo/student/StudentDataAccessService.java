@@ -34,6 +34,26 @@ public class StudentDataAccessService {
 
     }
 
+    int insertStudent(UUID studentId, Student student) {
+        String sql = "" +
+                "INSERT INTO student (" +
+                "student_id," +
+                " first_name," +
+                " last_name," +
+                " email," +
+                " gender) " +
+                "VALUES(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(
+                sql,
+                studentId,
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getGender().name().toUpperCase()
+        );
+
+    }
+
     private RowMapper<Student> mapStudentFromDb() {
         return (resultSet, i) -> {
 
@@ -50,5 +70,9 @@ public class StudentDataAccessService {
              );
 
          };
+    }
+
+    public int insertStudent(Student student) {
+        return 0;
     }
 }

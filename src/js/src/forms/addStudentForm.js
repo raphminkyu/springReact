@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import { Input, Button, Tag } from 'antd';
+import { addNewStudent } from '../client';
 
 const inputButtonMargin = {marginBottom: '10px'};
 const tagStyle = {backgroundColor: '#f50', color: 'white', ...inputButtonMargin};
 
-class AddStudentForm extends Component{
-    render(){
-        return (
+const AddStudentForm = (props) => 
+    (
             <Formik
             initialValues={{ firstName: '', lastName: '', email: '', gender: '' }}
             validate={values => {
@@ -33,16 +33,19 @@ class AddStudentForm extends Component{
 
                 if(!values.gender){
                     errors.gender = "Gender Required"
-                }else if(!['Male', 'male', 'FEMALE', 'female'].includes(values.gender)){
+                }else if(!['MALE', 'male', 'FEMALE', 'female'].includes(values.gender)){
                     errors.gender = "Gender must be (MALE, male, FEMALE, female)";
                 }
                 return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-                }, 400);
+            onSubmit={(student, { setSubmitting }) => {
+              
+                addNewStudent(student).then(() => {
+                   props.onSuccess();
+                    setSubmitting(false);
+                })
+               
+         
             }}
             >
             {({
@@ -106,8 +109,8 @@ class AddStudentForm extends Component{
             )}
             </Formik>
         
-        )
-    }
-}
+    );
+    
+
 
 export default AddStudentForm;
