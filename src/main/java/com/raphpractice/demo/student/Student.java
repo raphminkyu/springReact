@@ -1,16 +1,26 @@
 package com.raphpractice.demo.student;
-
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class Student {
 
     private final UUID studentId;
+
+    @NotBlank
     private final String firstName;
+
+    @NotBlank
     private final String lastName;
+
+    @NotBlank
     private final String email;
+
+    @NotNull
+    private final Gender gender;
 
     public Student(@JsonProperty("studentId") UUID studentId,
                    @JsonProperty("firstName") String firstName,
@@ -44,7 +54,7 @@ public class Student {
         return gender;
     }
 
-    private final Gender gender;
+
 
     @Override
     public String toString() {
