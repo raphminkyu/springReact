@@ -1,11 +1,9 @@
 package com.raphpractice.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
@@ -74,5 +72,22 @@ public class StudentDataAccessService {
 
     public int insertStudent(Student student) {
         return 0;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    boolean isEmailTaken(String email) {
+        String sql = "" +
+                "SELECT EXISTS (" +
+                " SELECT 1 " +
+                " FROM student" +
+                " WHERE email = ?" +
+                ")";
+        return jdbcTemplate.queryForObject(
+                sql,
+                new Object[] {email},
+                (resultSet, i) -> resultSet.getBoolean(1)
+        );
+
+
     }
 }

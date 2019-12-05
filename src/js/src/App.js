@@ -67,6 +67,13 @@ class App extends Component{
               onSuccess = {() => {this.closeAddStudentModal(); 
               this.fetchStudents();
             }}
+              onFailure = {(error) => {
+                const message = error.error.message;
+                const description = error.error.httpStatus;
+
+               
+                errorNotification(message, description);
+              }}
             />
 
         
